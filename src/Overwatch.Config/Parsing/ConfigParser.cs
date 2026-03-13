@@ -1,6 +1,6 @@
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-using System.Diagnostics.CodeAnalysis;
 using Overwatch.Config.Models;
 
 namespace Overwatch.Config.Parsing;
@@ -10,20 +10,9 @@ namespace Overwatch.Config.Parsing;
 /// </summary>
 public static class ConfigParser
 {
-    private static readonly IDeserializer Deserializer = BuildDeserializer();
-
-    // YamlDotNet's DeserializerBuilder is annotated with [RequiresDynamicCode] because it can use
-    // Reflection.Emit for performance. In AOT builds it falls back to regular reflection, which is
-    // safe here because all model types are statically referenced and will never be trimmed.
-    [UnconditionalSuppressMessage("AotAnalysis", "IL3050:RequiresDynamicCode",
-        Justification = "YamlDotNet falls back to regular reflection in AOT. Model types are preserved via static references.")]
-    private static IDeserializer BuildDeserializer()
-    {
-        return new DeserializerBuilder()
-            .WithNamingConvention(HyphenatedNamingConvention.Instance)
-            .WithTypeConverter(new DurationConverter())
-            .Build();
-    }
+    // Dummy ObjectDeserializer — all types handle their own reading via IYamlConvertible.
+    private static readonly ObjectDeserializer NoOpDeserializer =
+        type => throw new NotSupportedException($"Unexpected nested deserialize for {type}");
 
     /// <summary>Parses the given YAML string into a <see cref="NamespaceConfig"/>.</summary>
     public static NamespaceConfig Parse(string yaml)
@@ -31,7 +20,17 @@ public static class ConfigParser
         if (string.IsNullOrWhiteSpace(yaml))
             return new NamespaceConfig();
 
-        return Deserializer.Deserialize<NamespaceConfig>(yaml) ?? new NamespaceConfig();
+        using var reader = new StringReader(yaml);
+        var parser = new Parser(reader);
+        parser.Consume<StreamStart>();
+        if (!parser.TryConsume<DocumentStart>(out _))
+            return new NamespaceConfig();
+        if (parser.Current is DocumentEnd or StreamEnd or null)
+            return new NamespaceConfig();
+
+        var config = new NamespaceConfig();
+        ((IYamlConvertible)config).Read(parser, typeof(NamespaceConfig), NoOpDeserializer);
+        return config;
     }
 
     /// <summary>Parses the YAML file at the given path into a <see cref="NamespaceConfig"/>.</summary>
