@@ -1,5 +1,6 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using System.Diagnostics.CodeAnalysis;
 using Overwatch.Config.Models;
 
 namespace Overwatch.Config.Parsing;
@@ -11,6 +12,11 @@ public static class ConfigParser
 {
     private static readonly IDeserializer Deserializer = BuildDeserializer();
 
+    // YamlDotNet's DeserializerBuilder is annotated with [RequiresDynamicCode] because it can use
+    // Reflection.Emit for performance. In AOT builds it falls back to regular reflection, which is
+    // safe here because all model types are statically referenced and will never be trimmed.
+    [UnconditionalSuppressMessage("AotAnalysis", "IL3050:RequiresDynamicCode",
+        Justification = "YamlDotNet falls back to regular reflection in AOT. Model types are preserved via static references.")]
     private static IDeserializer BuildDeserializer()
     {
         return new DeserializerBuilder()

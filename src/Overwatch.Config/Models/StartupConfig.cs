@@ -1,3 +1,5 @@
+using YamlDotNet.Serialization;
+
 namespace Overwatch.Config.Models;
 
 /// <summary>How the service process starts.</summary>
@@ -10,6 +12,7 @@ public enum StartupType
 }
 
 /// <summary>Configuration for how to start a service.</summary>
+[YamlSerializable]
 public sealed class StartupConfig
 {
     public PlatformCommand Command { get; set; } = new();

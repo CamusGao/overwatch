@@ -1,6 +1,9 @@
+using YamlDotNet.Serialization;
+
 namespace Overwatch.Config.Models;
 
 /// <summary>Configuration for a single managed service.</summary>
+[YamlSerializable]
 public sealed class ServiceConfig
 {
     /// <summary>Whether the service should be started automatically. Defaults to true.</summary>
@@ -10,9 +13,11 @@ public sealed class ServiceConfig
     public string? User { get; set; }
 
     /// <summary>Names of other services in the same namespace that must start first.</summary>
+    [YamlMember(Alias = "depends-on")]
     public List<string>? DependsOn { get; set; }
 
     /// <summary>Working directory for the service process.</summary>
+    [YamlMember(Alias = "working-dir")]
     public string? WorkingDir { get; set; }
 
     /// <summary>Restart policy. Null means do not restart.</summary>
@@ -23,6 +28,7 @@ public sealed class ServiceConfig
 
     public LogsConfig? Logs { get; set; }
 
+    [YamlMember(Alias = "health-check")]
     public HealthCheckConfig? HealthCheck { get; set; }
 
     public StartupConfig Startup { get; set; } = new();

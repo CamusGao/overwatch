@@ -1,6 +1,9 @@
+using YamlDotNet.Serialization;
+
 namespace Overwatch.Config.Models;
 
 /// <summary>Configuration for periodic health checks.</summary>
+[YamlSerializable]
 public sealed class HealthCheckConfig
 {
     /// <summary>Health check command. First element is the executable, rest are arguments.</summary>
@@ -14,5 +17,6 @@ public sealed class HealthCheckConfig
     public int Retries { get; set; }
 
     /// <summary>Delay after service start before health checks begin.</summary>
+    [YamlMember(Alias = "start-period")]
     public TimeSpan StartPeriod { get; set; }
 }
