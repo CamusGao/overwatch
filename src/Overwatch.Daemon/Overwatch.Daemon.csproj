@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Overwatch.Config\Overwatch.Config.csproj" />
+    <ProjectReference Include="..\Overwatch.Ipc\Overwatch.Ipc.csproj" />
+    <ProjectReference Include="..\Overwatch.ServiceHost\Overwatch.ServiceHost.csproj" />
+    <ProjectReference Include="..\Overwatch.Platform\Overwatch.Platform.csproj" />
+  </ItemGroup>
+
+</Project>

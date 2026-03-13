@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Overwatch.Ipc\Overwatch.Ipc.csproj" />
+    <ProjectReference Include="..\Overwatch.Platform\Overwatch.Platform.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+</Project>

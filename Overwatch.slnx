@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Overwatch.Cli/Overwatch.Cli.csproj" />
+    <Project Path="src/Overwatch.Config/Overwatch.Config.csproj" />
+    <Project Path="src/Overwatch.Daemon/Overwatch.Daemon.csproj" />
+    <Project Path="src/Overwatch.Ipc/Overwatch.Ipc.csproj" />
+    <Project Path="src/Overwatch.Platform/Overwatch.Platform.csproj" />
+    <Project Path="src/Overwatch.ServiceHost/Overwatch.ServiceHost.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Overwatch.Config.Tests/Overwatch.Config.Tests.csproj" />
+    <Project Path="tests/Overwatch.Integration.Tests/Overwatch.Integration.Tests.csproj" />
+    <Project Path="tests/Overwatch.Ipc.Tests/Overwatch.Ipc.Tests.csproj" />
+    <Project Path="tests/Overwatch.Platform.Tests/Overwatch.Platform.Tests.csproj" />
+    <Project Path="tests/Overwatch.ServiceHost.Tests/Overwatch.ServiceHost.Tests.csproj" />
+  </Folder>
+</Solution>
