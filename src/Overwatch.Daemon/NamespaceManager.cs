@@ -13,13 +13,15 @@ namespace Overwatch.Daemon;
 public sealed class NamespaceManager : IAsyncDisposable
 {
     private readonly IPlatformService _platform;
+    private readonly string _logDir;
     private readonly Dictionary<string, Namespace> _namespaces = [];
     private readonly Dictionary<string, string> _contentHashes = [];
     private readonly SemaphoreSlim _lock = new(1, 1);
 
-    public NamespaceManager(IPlatformService platform)
+    public NamespaceManager(IPlatformService platform, string logDir)
     {
         _platform = platform;
+        _logDir = logDir;
     }
 
     /// <summary>Loads and starts a namespace from a YAML file.</summary>
@@ -50,7 +52,7 @@ public sealed class NamespaceManager : IAsyncDisposable
             if (_namespaces.TryGetValue(nsName, out var existing))
                 await existing.DisposeAsync();
 
-            var ns = new Namespace(nsName, filePath, config, _platform);
+            var ns = new Namespace(nsName, filePath, config, _platform, _logDir);
             _namespaces[nsName] = ns;
             _contentHashes[nsName] = ComputeFileHash(filePath);
             await ns.StartAllAsync(ct);

@@ -12,17 +12,19 @@ public sealed class DaemonHost : IAsyncDisposable
 {
     private readonly string _configDir;
     private readonly string _socketPath;
+    private readonly string _logDir;
     private readonly IPlatformService _platform;
     private readonly NamespaceManager _namespaceManager;
     private readonly ReloadHandler _reloadHandler;
     private IpcServer? _ipcServer;
 
-    public DaemonHost(string configDir, string socketPath, IPlatformService platform)
+    public DaemonHost(string configDir, string socketPath, string logDir, IPlatformService platform)
     {
         _configDir = configDir;
         _socketPath = socketPath;
+        _logDir = logDir;
         _platform = platform;
-        _namespaceManager = new NamespaceManager(platform);
+        _namespaceManager = new NamespaceManager(platform, logDir);
         _reloadHandler = new ReloadHandler(_namespaceManager, configDir);
     }
 

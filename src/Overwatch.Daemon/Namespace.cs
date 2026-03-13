@@ -15,15 +15,17 @@ public sealed class Namespace : IAsyncDisposable
     public NamespaceConfig Config { get; private set; }
     private readonly Dictionary<string, Overwatch.ServiceHost.ServiceHost> _services = [];
     private readonly IPlatformService _platform;
+    private readonly string _logDir;
 
     public IReadOnlyDictionary<string, Overwatch.ServiceHost.ServiceHost> Services => _services;
 
-    public Namespace(string name, string filePath, NamespaceConfig config, IPlatformService platform)
+    public Namespace(string name, string filePath, NamespaceConfig config, IPlatformService platform, string logDir)
     {
         Name = name;
         FilePath = filePath;
         Config = config;
         _platform = platform;
+        _logDir = logDir;
     }
 
     /// <summary>Starts all enabled services in dependency order.</summary>
@@ -75,7 +77,9 @@ public sealed class Namespace : IAsyncDisposable
     {
         if (!_services.TryGetValue(name, out var host))
         {
-            host = new Overwatch.ServiceHost.ServiceHost(name, config, _platform);
+            // Log base dir: <logDir>/<namespace>/<service>/
+            var serviceLogBase = Path.Combine(_logDir, Name);
+            host = new Overwatch.ServiceHost.ServiceHost(name, config, _platform, serviceLogBase);
             _services[name] = host;
         }
         return host;

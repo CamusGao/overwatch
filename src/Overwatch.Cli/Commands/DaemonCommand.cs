@@ -6,12 +6,12 @@ namespace Overwatch.Cli.Commands;
 /// <summary>Handles 'daemon start/stop/status' commands.</summary>
 internal static class DaemonCommand
 {
-    public static async Task<int> StartAsync(string configDir, string socketPath)
+    public static async Task<int> StartAsync(string configDir, string socketPath, string logDir)
     {
-        Console.WriteLine($"[daemon] Starting. Config: {configDir}, Socket: {socketPath}");
+        Console.WriteLine($"[daemon] Starting. Config: {configDir}, Socket: {socketPath}, Logs: {logDir}");
 
         var platform = PlatformServiceFactory.Create();
-        var host = new DaemonHost(configDir, socketPath, platform);
+        var host = new DaemonHost(configDir, socketPath, logDir, platform);
 
         using var cts = new CancellationTokenSource();
 

@@ -9,6 +9,7 @@ public sealed class WindowsPlatformService : IPlatformService
 
     public string DefaultConfigDir => @"C:\ProgramData\overwatch\";
     public string DefaultSocketPath => @"\\.\pipe\overwatch";
+    public string DefaultLogDir => @"C:\ProgramData\overwatch\logs";
 
     public void InstallService(string executablePath, string configDir, string socketPath)
     {

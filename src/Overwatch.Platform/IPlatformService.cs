@@ -16,6 +16,9 @@ public interface IPlatformService
     /// <summary>Default configuration directory for this platform.</summary>
     string DefaultConfigDir { get; }
 
+    /// <summary>Default log directory for this platform.</summary>
+    string DefaultLogDir { get; }
+
     /// <summary>Default IPC socket/pipe path for this platform.</summary>
     string DefaultSocketPath { get; }
 

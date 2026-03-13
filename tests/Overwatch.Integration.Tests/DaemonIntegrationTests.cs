@@ -40,7 +40,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         var (success, error) = await manager.LoadAsync(filePath);
 
         Assert.True(success, error);
@@ -64,7 +64,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         var (success, error) = await manager.LoadAsync(filePath);
 
         Assert.False(success);
@@ -84,7 +84,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         await manager.LoadAsync(filePath);
 
         var response = await manager.HandlePsAsync();
@@ -95,7 +95,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
     public async Task NamespaceManager_Stop_UnknownNamespace_ReturnsError()
     {
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         var response = await manager.HandleStopAsync("nonexistent");
 
         Assert.False(response.Ok);
@@ -115,7 +115,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         await manager.LoadAsync(filePath);
 
         var nsNames = manager.GetNamespaceNames();
@@ -132,7 +132,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
     public async Task ReloadHandler_NewFile_LoadsNamespace()
     {
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         var handler = new ReloadHandler(manager, _configDir);
 
         // Start with empty config dir
@@ -167,7 +167,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         await manager.LoadAsync(filePath);
         Assert.Contains("myns", manager.GetNamespaceNames());
 
@@ -243,7 +243,7 @@ public sealed class DaemonCoreIntegrationTests : IDisposable
         await File.WriteAllTextAsync(filePath, yaml);
 
         var platform = PlatformServiceFactory.Create();
-        await using var manager = new NamespaceManager(platform);
+        await using var manager = new NamespaceManager(platform, Path.GetTempPath());
         var (success, error) = await manager.LoadAsync(filePath);
 
         Assert.True(success, error);

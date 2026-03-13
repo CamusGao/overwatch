@@ -46,7 +46,7 @@ overwatch restart myapp
 
 | Command | Description |
 |---------|-------------|
-| `overwatch daemon start [--config-dir <path>] [--socket <path>]` | Start the daemon |
+| `overwatch daemon start [--config-dir <path>] [--socket <path>] [--log-dir <path>]` | Start the daemon |
 | `overwatch daemon stop` | Stop the daemon |
 | `overwatch daemon status` | Show daemon status |
 | `overwatch start <ns>` | Start all services in a namespace |
@@ -59,10 +59,15 @@ overwatch restart myapp
 
 **Default paths:**
 
-| Platform | Config dir | Socket / Pipe |
-|----------|------------|---------------|
-| Linux | `/etc/overwatch/` | `/var/run/overwatch.sock` |
-| Windows | `C:\ProgramData\overwatch\` | `\\.\pipe\overwatch` |
+| Platform | Config dir | Socket / Pipe | Log dir |
+|----------|------------|---------------|---------|
+| Linux | `/etc/overwatch/` | `/var/run/overwatch.sock` | `/var/log/overwatch` |
+| Windows | `C:\ProgramData\overwatch\` | `\\.\pipe\overwatch` | `C:\ProgramData\overwatch\logs` |
+
+All paths can be overridden with `--config-dir`, `--socket`, and `--log-dir` respectively.
+
+> **Logs**: If a service has no `logs:` section, logs are written to `<log-dir>/<namespace>/<service>/service.log`.
+> Default retention: **100 MB** per log file, **7 days** history.
 
 ## Configuration
 

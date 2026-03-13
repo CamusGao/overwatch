@@ -10,6 +10,7 @@ public sealed class LinuxPlatformService : IPlatformService
 
     public string DefaultConfigDir => "/etc/overwatch/";
     public string DefaultSocketPath => "/var/run/overwatch.sock";
+    public string DefaultLogDir => "/var/log/overwatch";
 
     public void InstallService(string executablePath, string configDir, string socketPath)
     {

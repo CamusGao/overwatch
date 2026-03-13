@@ -12,6 +12,7 @@ public sealed class ServiceHost : IAsyncDisposable
     private readonly string _name;
     private readonly ServiceConfig _config;
     private readonly IPlatformService _platform;
+    private readonly string? _logBaseDir;
     private readonly RestartController _restartController;
     private ProcessRunner? _processRunner;
     private HealthChecker? _healthChecker;
@@ -33,11 +34,12 @@ public sealed class ServiceHost : IAsyncDisposable
 
     public event EventHandler<ServiceState>? StateChanged;
 
-    public ServiceHost(string name, ServiceConfig config, IPlatformService platform)
+    public ServiceHost(string name, ServiceConfig config, IPlatformService platform, string? logBaseDir = null)
     {
         _name = name;
         _config = config;
         _platform = platform;
+        _logBaseDir = logBaseDir;
         _restartController = new RestartController(config.Restart);
     }
 
@@ -87,11 +89,9 @@ public sealed class ServiceHost : IAsyncDisposable
         _processRunner = new ProcessRunner(_config, _platform);
         _processRunner.ProcessExited += OnProcessExited;
 
-        if (_config.Logs is not null)
-        {
-            _logWriter = new LogWriter(_config.Logs, _name);
-            _logWriter.Open();
-        }
+        var logsConfig = _config.Logs ?? new LogsConfig();
+        _logWriter = new LogWriter(logsConfig, _name, _logBaseDir);
+        _logWriter.Open();
 
         var started = _processRunner.Start(
             stdoutHandler: line => _logWriter?.WriteLine($"[out] {line}"),

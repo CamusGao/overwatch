@@ -5,6 +5,7 @@ public sealed class CliArgs
 {
     public string? ConfigDir { get; set; }
     public string? SocketPath { get; set; }
+    public string? LogDir { get; set; }
     public string Command { get; set; } = string.Empty;
     public string? SubCommand { get; set; }
     public string? Namespace { get; set; }
@@ -27,6 +28,9 @@ public sealed class CliArgs
                     break;
                 case "--socket" when i + 1 < args.Length:
                     result.SocketPath = args[++i];
+                    break;
+                case "--log-dir" when i + 1 < args.Length:
+                    result.LogDir = args[++i];
                     break;
                 case "--help":
                 case "-h":
@@ -74,6 +78,7 @@ public sealed class CliArgs
             Options:
               --config-dir <path>       Override configuration directory
               --socket <path>           Override IPC socket/pipe path
+              --log-dir <path>          Override log output directory
               --help, -h                Show this help message
             """);
     }

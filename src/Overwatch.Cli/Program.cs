@@ -9,12 +9,13 @@ if (parsed is null) return 1;
 var platform = PlatformServiceFactory.Create();
 var configDir = parsed.ConfigDir ?? platform.DefaultConfigDir;
 var socketPath = parsed.SocketPath ?? platform.DefaultSocketPath;
+var logDir = parsed.LogDir ?? platform.DefaultLogDir;
 
 return parsed.Command switch
 {
     "daemon" => parsed.SubCommand switch
     {
-        "start" => await DaemonCommand.StartAsync(configDir, socketPath),
+        "start" => await DaemonCommand.StartAsync(configDir, socketPath, logDir),
         "stop" or "status" => UnsupportedSubCommand(parsed.Command, parsed.SubCommand),
         _ => UnknownSubCommand(parsed.Command, parsed.SubCommand),
     },
