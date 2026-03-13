@@ -131,8 +131,19 @@ public sealed class NamespaceManager : IAsyncDisposable
         {
             if (!_namespaces.TryGetValue(nsName, out var ns))
                 return IpcResponse.Failure($"Namespace '{nsName}' not found.");
+
             await ns.StopAllAsync(ct);
-            await ns.StartAllAsync(ct);
+            await ns.DisposeAsync();
+
+            // Re-read config from disk so any changes take effect
+            NamespaceConfig newConfig;
+            try { newConfig = ConfigParser.ParseFile(ns.FilePath); }
+            catch (Exception ex) { return IpcResponse.Failure($"Failed to parse config: {ex.Message}"); }
+
+            var newNs = new Namespace(nsName, ns.FilePath, newConfig, _platform, _logDir);
+            _namespaces[nsName] = newNs;
+            _contentHashes[nsName] = ComputeFileHash(ns.FilePath);
+            await newNs.StartAllAsync(ct);
             return IpcResponse.Success();
         }
         catch (Exception ex)
