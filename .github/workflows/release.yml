@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          include-prerelease: true
 
       - name: Publish
         run: >
@@ -61,7 +62,7 @@ jobs:
           cd artifacts
           for dir in */; do
             rid="${dir%/}"
-            zip -r "../overwatch-${rid}.zip" "$dir"
+            zip -r "../${rid}.zip" "$dir"
           done
           cd ..
 
