@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Overwatch.Config\Overwatch.Config.csproj" />
+    <ProjectReference Include="..\Overwatch.Platform\Overwatch.Platform.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\Overwatch.Daemon\Overwatch.Daemon.csproj" />
     <ProjectReference Include="..\Overwatch.Ipc\Overwatch.Ipc.csproj" />
     <ProjectReference Include="..\Overwatch.Platform\Overwatch.Platform.csproj" />
   </ItemGroup>
