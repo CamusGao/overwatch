@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <AssemblyName>overwatch</AssemblyName>
     <PublishAot>true</PublishAot>
   </PropertyGroup>
 
