@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="YAML">
-    <PackageVersion Include="YamlDotNet" Version="16.3.0" />
+    <PackageVersion Include="YamlDotNet" Version="17.0.1" />
   </ItemGroup>
 
   <ItemGroup Label="Test">
